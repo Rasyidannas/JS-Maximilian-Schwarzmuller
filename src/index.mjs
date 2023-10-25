@@ -85,3 +85,36 @@ startGameBtn.addEventListener("click", function () {
   alert(message);
   gameIsRunning = false;
 });
+
+//rest arguments and callback function
+const combine = (resultHandler, operator, ...numbers) => {
+  const validateNumber = (number) => (isNaN(number) ? 0 : number);
+
+  let sum = 0;
+  for (const num of numbers) {
+    if (operator === "ADD") {
+      sum += validateNumber(num);
+    } else {
+      sum -= validateNumber(num);
+    }
+  }
+
+  //this is call callback
+  resultHandler(sum);
+};
+
+const showResult = (messageText, result) => {
+  alert(messageText + " " + result);
+};
+
+// this is using bind for delay and run first in this and then in callback
+combine(
+  showResult.bind(null, "the result after adding all number is:"),
+  "ADD",
+  1,
+  2,
+  4,
+  9,
+  10,
+  22
+);
