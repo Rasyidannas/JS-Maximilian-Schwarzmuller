@@ -31,5 +31,13 @@ function PersonConstructor() {
   };
 }
 
+//this for assign new object with method and it will store in __proto__ (proof in lin 43)
+PersonConstructor.prototype = {
+  printAge() {
+    console.log(this.age);
+  },
+};
+
 const personConstructor = new PersonConstructor();
 personConstructor.greet();
+console.log(personConstructor.__proto__);
