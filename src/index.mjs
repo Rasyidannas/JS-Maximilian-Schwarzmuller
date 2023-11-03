@@ -77,3 +77,21 @@ console.log(p2);
 
 //this is prof all object has __proto__, __proto__ has bunch of static methods and as fallback too
 console.log(Object.prototype.__proto__);
+
+const course = {
+  title: "JavaScript - The Complete Guide",
+  rating: 5,
+};
+
+// console.log(course.__proto__);
+//this same like console.log in above
+console.log(Object.getPrototypeOf(course));
+
+//this is for set method in object
+Object.setPrototypeOf(course, {
+  ...Object.getPrototypeOf(course),
+  printRating: function () {
+    console.log(`${this.rating}/5`);
+  },
+});
+course.printRating();
