@@ -16,7 +16,14 @@ class Person extends AgedPerson {
     this.age = 24;
   }
 
-  //method
+  //this will not store in __proto__
+  // greet = function() {
+  //   console.log(
+  //     "Hi, I am " + this.name + " and I am " + this.age + " years old."
+  //   );
+  // }
+
+  //this method will store in __proto__
   greet() {
     console.log(
       "Hi, I am " + this.name + " and I am " + this.age + " years old."
@@ -69,4 +76,4 @@ const p2 = new personConstructor.__proto__.constructor();
 console.log(p2);
 
 //this is prof all object has __proto__, __proto__ has bunch of static methods and as fallback too
-console.log(Object.prototype);
+console.log(Object.prototype.__proto__);
