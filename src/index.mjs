@@ -1,10 +1,18 @@
+class AgedPerson {
+  printAge() {
+    console.log(this.age);
+  }
+}
+
 //Example Class
-class Person {
+class Person extends AgedPerson {
+  //so AgedPerson will store in __proto__
   //properti
   name = "Rasyid";
 
   //this is property for auto run when instantiate
   constructor() {
+    super();
     this.age = 24;
   }
 
@@ -19,6 +27,8 @@ class Person {
 //this is intantiate Class
 const person = new Person();
 person.greet();
+person.printAge();
+console.log(person.__proto__); //this is proof of extends AgedPerson above is store in __proto__
 
 //Example Constructor Function
 function PersonConstructor() {
@@ -31,13 +41,22 @@ function PersonConstructor() {
   };
 }
 
-//this for assign new object with method and it will store in __proto__ (proof in lin 43)
-PersonConstructor.prototype = {
-  printAge() {
-    console.log(this.age);
-  },
+//this for assign new object with method and it will store in __proto__
+// PersonConstructor.prototype = {
+//   printAge() {
+//     console.log(this.age);
+//   },
+// };
+
+//this for assign method like class extends
+PersonConstructor.prototype.printAge = function () {
+  console.log(this.age);
 };
 
-const personConstructor = new PersonConstructor();
+const personConstructor = new PersonConstructor(); //this is proof of above is store in __proto__
 personConstructor.greet();
 console.log(personConstructor.__proto__);
+
+//this is for if you can't access contructor but you need do this for do method (PersonConstructor.prototype.printAge)
+const p2 = new personConstructor.__proto__.constructor();
+console.log(p2);
