@@ -41,6 +41,13 @@ function PersonConstructor() {
   };
 }
 
+//this will be not added in __proto__
+PersonConstructor.decribe = function () {
+  console.log("Creating persons...");
+};
+//this is proof of above
+console.log(PersonConstructor);
+
 //this for assign new object with method and it will store in __proto__
 // PersonConstructor.prototype = {
 //   printAge() {
@@ -60,3 +67,6 @@ console.log(personConstructor.__proto__);
 //this is for if you can't access contructor but you need do this for do method (PersonConstructor.prototype.printAge)
 const p2 = new personConstructor.__proto__.constructor();
 console.log(p2);
+
+//this is prof all object has __proto__, __proto__ has bunch of static methods and as fallback too
+console.log(Object.prototype);
