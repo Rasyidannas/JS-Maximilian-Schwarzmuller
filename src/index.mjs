@@ -1,12 +1,12 @@
 //this is using class
 class Product {
-  //properties
-  title = "DEFAULT";
-  imageUrl;
-  description;
-  price;
+  //field is not required if using constructor property
+  // title = "DEFAULT";
+  // imageUrl;
+  // description;
+  // price;
 
-  //consturctor is auto run when instance
+  //this is a property consturctor and it will auto run when instance
   constructor(title, imageUrl, desc, price) {
     (this.title = title),
       (this.imageUrl = imageUrl),
