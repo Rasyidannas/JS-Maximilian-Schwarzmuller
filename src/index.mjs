@@ -1,5 +1,17 @@
+//this is using class
+class Product {
+  title = "DEFAULT";
+  imageUrl;
+  description;
+  price;
+}
+
+console.log(new Product());
+
 const productList = {
   products: [
+    //instance class
+    new Product(),
     {
       title: "A Pillow",
       imageUrl:
