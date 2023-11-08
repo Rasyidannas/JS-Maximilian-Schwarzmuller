@@ -1,97 +1,45 @@
-class AgedPerson {
-  printAge() {
-    console.log(this.age);
-  }
-}
+const productList = {
+  products: [
+    {
+      title: "A Pillow",
+      imageUrl:
+        "https://images.unsplash.com/photo-1629949009765-40fc74c9ec21?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGlsbG93fGVufDB8fDB8fHww",
+      price: 19.99,
+      description: "A soft pillow",
+    },
+    {
+      title: "A Carpet",
+      imageUrl:
+        "https://images.unsplash.com/photo-1600166898405-da9535204843?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: 89.99,
+      description: "A carpet might you like - or not.",
+    },
+  ],
 
-//Example Class
-class Person extends AgedPerson {
-  //so AgedPerson will store in __proto__
-  //properti
-  name = "Rasyid";
+  render() {
+    const renderHook = document.getElementById("app");
+    const prodList = document.createElement("ul");
+    prodList.className = "product-list";
 
-  //this is property for auto run when instantiate
-  constructor() {
-    super();
-    this.age = 24;
-  }
+    for (const prod of this.products) {
+      const prodEl = document.createElement("li");
+      prodEl.className = "product-item";
+      prodEl.innerHTML = `
+      <div>
+        <img src="${prod.imageUrl}" alt="${prod.title}" >
+        <div class="product-item__content">
+          <h2>${prod.title}</h2>
+          <h3>\$${prod.price}</h3>
+          <p>${prod.description}</p>
+          <button>Add to Cart</button>
+        </div>
+      </div>
+      `;
+      prodList.append(prodEl);
+    }
 
-  //this will not store in __proto__
-  // greet = function() {
-  //   console.log(
-  //     "Hi, I am " + this.name + " and I am " + this.age + " years old."
-  //   );
-  // }
-
-  //this method will store in __proto__
-  greet() {
-    console.log(
-      "Hi, I am " + this.name + " and I am " + this.age + " years old."
-    );
-  }
-}
-
-//this is intantiate Class
-const person = new Person();
-person.greet();
-person.printAge();
-console.log(person.__proto__); //this is proof of extends AgedPerson above is store in __proto__
-
-//Example Constructor Function
-function PersonConstructor() {
-  this.age = 24;
-  this.name = "Rasyid";
-  this.greet = function () {
-    console.log(
-      "Hi, I am " + this.name + " and I am " + this.age + " years old."
-    );
-  };
-}
-
-//this will be not added in __proto__
-PersonConstructor.decribe = function () {
-  console.log("Creating persons...");
-};
-//this is proof of above
-console.log(PersonConstructor);
-
-//this for assign new object with method and it will store in __proto__
-// PersonConstructor.prototype = {
-//   printAge() {
-//     console.log(this.age);
-//   },
-// };
-
-//this for assign method like class extends
-PersonConstructor.prototype.printAge = function () {
-  console.log(this.age);
-};
-
-const personConstructor = new PersonConstructor(); //this is proof of above is store in __proto__
-personConstructor.greet();
-console.log(personConstructor.__proto__);
-
-//this is for if you can't access contructor but you need do this for do method (PersonConstructor.prototype.printAge)
-const p2 = new personConstructor.__proto__.constructor();
-console.log(p2);
-
-//this is prof all object has __proto__, __proto__ has bunch of static methods and as fallback too
-console.log(Object.prototype.__proto__);
-
-const course = {
-  title: "JavaScript - The Complete Guide",
-  rating: 5,
-};
-
-// console.log(course.__proto__);
-//this same like console.log in above
-console.log(Object.getPrototypeOf(course));
-
-//this is for set method in object
-Object.setPrototypeOf(course, {
-  ...Object.getPrototypeOf(course),
-  printRating: function () {
-    console.log(`${this.rating}/5`);
+    renderHook.append(prodList);
   },
-});
-course.printRating();
+};
+
+productList.render();
