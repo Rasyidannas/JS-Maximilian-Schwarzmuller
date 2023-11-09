@@ -1,6 +1,6 @@
 //this is using class
 class Product {
-  //field is not required if using constructor property
+  //field is not required if using constructor property and you can declare field/properti using this
   // title = "DEFAULT";
   // imageUrl;
   // description;
@@ -21,7 +21,7 @@ class ShoppingCart {
   addProduct(product) {
     this.items.push(product);
     //this for reassign totalOutput properti
-    this.totalOutput = `<h2>Total: \$${1}</h2>`;
+    this.totalOutput.innerHTML = `<h2>Total: \$${1}</h2>`;
   }
 
   render() {
@@ -43,9 +43,7 @@ class ProductItem {
   }
 
   addToCart() {
-    console.log("Adding product to cart...");
-    console.log(this.product);
-    ShoppingCart.addProduct();
+    App.addProductToCart(this.product);
   }
 
   render() {
@@ -54,7 +52,7 @@ class ProductItem {
     prodEl.innerHTML = `
       <div>
         <img src="${this.product.imageUrl}" alt="${this.product.title}" >
-        <div class="this.productuct-item__content">
+        <div class="product-item__content">
           <h2>${this.product.title}</h2>
           <h3>\$${this.product.price}</h3>
           <p>${this.product.description}</p>
@@ -108,8 +106,8 @@ class Shop {
     const renderHook = document.getElementById("app");
 
     //instantiate ShoppingCart class
-    const cart = new ShoppingCart();
-    const cartEl = cart.render();
+    this.cart = new ShoppingCart(); //this.cart is for store as properti cart
+    const cartEl = this.cart.render();
 
     //instantiate ProductList class
     const productList = new ProductList();
@@ -120,5 +118,19 @@ class Shop {
   }
 }
 
-const shop = new Shop();
-shop.render();
+class App {
+  static cart;
+
+  // This can access without instantiate
+  static init() {
+    const shop = new Shop();
+    shop.render();
+    this.cart = shop.cart; //this.cart store as properti cart static and access cart properti in render() method
+  }
+
+  static addProductToCart(product) {
+    this.cart.addProduct(product);
+  }
+}
+
+App.init();
