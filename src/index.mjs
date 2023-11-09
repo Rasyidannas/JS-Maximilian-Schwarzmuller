@@ -18,6 +18,12 @@ class Product {
 class ShoppingCart {
   items = [];
 
+  addProduct(product) {
+    this.items.push(product);
+    //this for reassign totalOutput properti
+    this.totalOutput = `<h2>Total: \$${1}</h2>`;
+  }
+
   render() {
     const cartEl = document.createElement("section");
     cartEl.innerHTML = `
@@ -25,6 +31,8 @@ class ShoppingCart {
       <button>Order Now!</button>
     `;
     cartEl.className = "cart";
+    //adding new properti
+    this.totalOutput = cartEl.querySelector("h2");
     return cartEl;
   }
 }
@@ -37,6 +45,7 @@ class ProductItem {
   addToCart() {
     console.log("Adding product to cart...");
     console.log(this.product);
+    ShoppingCart.addProduct();
   }
 
   render() {
