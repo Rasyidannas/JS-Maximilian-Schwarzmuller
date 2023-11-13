@@ -15,7 +15,37 @@ class Product {
   }
 }
 
-class ShoppingCart {
+class ElementAttribute {
+  constructor(attrName, attrValue) {
+    this.name = attrName;
+    this.value = attrValue;
+  }
+}
+
+class Compenent {
+  constructor(renderHookId) {
+    this.hookId = renderHookId;
+  }
+
+  createRootElement(tag, cssClasses, attributes) {
+    const rootElement = document.createElement(tag);
+    if (cssClasses) {
+      rootElement.className = cssClasses;
+    }
+
+    if (attributes && attributes.length > 0) {
+      for (const attr of attributes) {
+        rootElement.setAttribute(attr.name, attr.value);
+      }
+    }
+
+    document.getElementById(this.hookId).append(rootElement);
+    return rootElement;
+  }
+}
+
+//this extends is for inheriting classes
+class ShoppingCart extends Compenent {
   items = [];
 
   // This example of setter and getter(both will added/running when class instatiate)
@@ -23,7 +53,9 @@ class ShoppingCart {
   set cartItems(value) {
     this.items = value; //this will be set a field items in above
     //this for reassign totalOutput properti
-    this.totalOutput.innerHTML = `<h2>Total: \$${this.totalAmount.toFixed(2)}</h2>`;
+    this.totalOutput.innerHTML = `<h2>Total: \$${this.totalAmount.toFixed(
+      2
+    )}</h2>`;
   }
 
   //this is using getter and for read properties
@@ -36,6 +68,11 @@ class ShoppingCart {
     return sum;
   }
 
+  constructor(renderHookId) {
+    //super() will call constructor in the parent class
+    super(renderHookId);
+  }
+
   addProduct(product) {
     const updatedItems = [...this.items];
     updatedItems.push(product);
@@ -43,7 +80,8 @@ class ShoppingCart {
   }
 
   render() {
-    const cartEl = document.createElement("section");
+    //this accsess parent class (Component)
+    const cartEl = this.createRootElement("section", "cart");
     cartEl.innerHTML = `
       <h2>Total: \$${0}</h2>
       <button>Order Now!</button>
@@ -51,7 +89,6 @@ class ShoppingCart {
     cartEl.className = "cart";
     //adding new propertis
     this.totalOutput = cartEl.querySelector("h2");
-    return cartEl;
   }
 }
 
@@ -124,14 +161,13 @@ class Shop {
     const renderHook = document.getElementById("app");
 
     //instantiate ShoppingCart class
-    this.cart = new ShoppingCart(); //this.cart is for store as properti cart
-    const cartEl = this.cart.render();
+    this.cart = new ShoppingCart("app"); //this.cart is for store as properti cart
+    this.cart.render();
 
     //instantiate ProductList class
     const productList = new ProductList();
     const prodListEl = productList.render();
 
-    renderHook.append(cartEl);
     renderHook.append(prodListEl);
   }
 }
