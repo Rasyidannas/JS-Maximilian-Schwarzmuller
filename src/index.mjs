@@ -18,10 +18,28 @@ class Product {
 class ShoppingCart {
   items = [];
 
-  addProduct(product) {
-    this.items.push(product);
+  // This example of setter and getter(both will added/running when class instatiate)
+  //this is using setter and for write values to propeties
+  set cartItems(value) {
+    this.items = value; //this will be set a field items in above
     //this for reassign totalOutput properti
-    this.totalOutput.innerHTML = `<h2>Total: \$${1}</h2>`;
+    this.totalOutput.innerHTML = `<h2>Total: \$${this.totalAmount.toFixed(2)}</h2>`;
+  }
+
+  //this is using getter and for read properties
+  get totalAmount() {
+    const sum = this.items.reduce(
+      (prevValue, curItem) => prevValue + curItem.price,
+      0
+    );
+
+    return sum;
+  }
+
+  addProduct(product) {
+    const updatedItems = [...this.items];
+    updatedItems.push(product);
+    this.cartItems = updatedItems;
   }
 
   render() {
@@ -31,7 +49,7 @@ class ShoppingCart {
       <button>Order Now!</button>
     `;
     cartEl.className = "cart";
-    //adding new properti
+    //adding new propertis
     this.totalOutput = cartEl.querySelector("h2");
     return cartEl;
   }
