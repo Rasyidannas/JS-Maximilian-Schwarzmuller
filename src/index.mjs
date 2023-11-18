@@ -123,7 +123,7 @@ class ProductItem extends Component {
   }
 }
 
-class ProductList {
+class ProductList extends Component {
   products = [
     //instantiate class Product
     new Product(
@@ -145,14 +145,14 @@ class ProductList {
   }
 
   render() {
-    //adding id attributes
+    //adding id attributes and store this.createRootElement
     this.createRootElement("ul", "product-list", [
       new ElementAttribute("id", "prod-list"),
     ]);
 
     for (const prod of this.products) {
       //this instantiate class ProductItem
-      const productItem = new ProductItem(prod, prodList);
+      const productItem = new ProductItem(prod, "prod-list");
       productItem.render();
     }
   }
