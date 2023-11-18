@@ -145,7 +145,7 @@ class ProductList extends Component {
   }
 
   render() {
-    //adding id attributes and store this.createRootElement
+    //adding id attributes and this.createRootElement from parent class Component
     this.createRootElement("ul", "product-list", [
       new ElementAttribute("id", "prod-list"),
     ]);
