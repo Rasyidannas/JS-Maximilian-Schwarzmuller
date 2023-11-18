@@ -22,7 +22,7 @@ class ElementAttribute {
   }
 }
 
-class Compenent {
+class Component {
   constructor(renderHookId) {
     this.hookId = renderHookId;
   }
@@ -45,7 +45,7 @@ class Compenent {
 }
 
 //this extends is for inheriting classes
-class ShoppingCart extends Compenent {
+class ShoppingCart extends Component {
   items = [];
 
   // This example of setter and getter(both will added/running when class instatiate)
@@ -92,8 +92,9 @@ class ShoppingCart extends Compenent {
   }
 }
 
-class ProductItem {
-  constructor(product) {
+class ProductItem extends Component {
+  constructor(product, renderHookId) {
+    super(renderHookId);
     this.product = product;
   }
 
@@ -102,8 +103,8 @@ class ProductItem {
   }
 
   render() {
-    const prodEl = document.createElement("li");
-    prodEl.className = "product-item";
+    //this.createElement from class Component
+    const prodEl = this.createRootElement("li", "product-item");
     prodEl.innerHTML = `
       <div>
         <img src="${this.product.imageUrl}" alt="${this.product.title}" >
@@ -139,36 +140,33 @@ class ProductList {
     ),
   ];
 
-  constructor() {}
+  constructor(renderHookId) {
+    super(renderHookId);
+  }
 
   render() {
-    const prodList = document.createElement("ul");
-    prodList.className = "product-list";
+    //adding id attributes
+    this.createRootElement("ul", "product-list", [
+      new ElementAttribute("id", "prod-list"),
+    ]);
 
     for (const prod of this.products) {
       //this instantiate class ProductItem
-      const productItem = new ProductItem(prod);
-      const prodEl = productItem.render();
-      prodList.append(prodEl);
+      const productItem = new ProductItem(prod, prodList);
+      productItem.render();
     }
-
-    return prodList;
   }
 }
 
 class Shop {
   render() {
-    const renderHook = document.getElementById("app");
-
     //instantiate ShoppingCart class
-    this.cart = new ShoppingCart("app"); //this.cart is for store as properti cart
+    this.cart = new ShoppingCart("app"); //this.cart is for store as properti cart and getElementById('app') in index.html
     this.cart.render();
 
     //instantiate ProductList class
-    const productList = new ProductList();
-    const prodListEl = productList.render();
-
-    renderHook.append(prodListEl);
+    const productList = new ProductList("app"); //this 'app' is property
+    productList.render();
   }
 }
 
