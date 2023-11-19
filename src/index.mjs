@@ -23,9 +23,11 @@ class ElementAttribute {
 }
 
 class Component {
-  constructor(renderHookId) {
+  constructor(renderHookId, shouldRender = true) {
     this.hookId = renderHookId;
-    this.render(); //this will auto call when class instantiate and it will be connect to child of class component
+    if (shouldRender) {
+      this.render(); //this will auto call when shouldRender argument true and class instantiate. So, it will be connect to child of class component
+    }
   }
 
   render() {}
@@ -97,8 +99,10 @@ class ShoppingCart extends Component {
 
 class ProductItem extends Component {
   constructor(product, renderHookId) {
-    super(renderHookId);
+    //this avoid render in class component because false
+    super(renderHookId, false);
     this.product = product;
+    this.render();
   }
 
   addToCart() {
@@ -127,24 +131,39 @@ class ProductItem extends Component {
 }
 
 class ProductList extends Component {
-  products = [
-    //instantiate class Product
-    new Product(
-      "A Pillow",
-      "https://images.unsplash.com/photo-1629949009765-40fc74c9ec21?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGlsbG93fGVufDB8fDB8fHww",
-      "A soft pillow",
-      19.99
-    ),
-    new Product(
-      "A Carpet",
-      "https://images.unsplash.com/photo-1600166898405-da9535204843?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "A carpet might you like - or not.",
-      89.99
-    ),
-  ];
+  products = [];
 
   constructor(renderHookId) {
     super(renderHookId);
+    //this put in constructor for auto when instatntiate
+    this.fetchProducts();
+  }
+
+  fetchProducts() {
+    this.products = [
+      //instantiate class Product
+      new Product(
+        "A Pillow",
+        "https://images.unsplash.com/photo-1629949009765-40fc74c9ec21?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGlsbG93fGVufDB8fDB8fHww",
+        "A soft pillow",
+        19.99
+      ),
+      new Product(
+        "A Carpet",
+        "https://images.unsplash.com/photo-1600166898405-da9535204843?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "A carpet might you like - or not.",
+        89.99
+      ),
+    ];
+
+    this.renderProducts();
+  }
+
+  renderProducts() {
+    for (const prod of this.products) {
+      //this instantiate class ProductItem
+      new ProductItem(prod, "prod-list");
+    }
   }
 
   render() {
@@ -153,16 +172,16 @@ class ProductList extends Component {
       new ElementAttribute("id", "prod-list"),
     ]);
 
-    for (const prod of this.products) {
-      //this instantiate class ProductItem
-      new ProductItem(prod, "prod-list");
+    //this will avoid if this.products = 0
+    if (this.products && this.products.length > 0) {
+      this.renderProducts();
     }
   }
 }
 
 class Shop {
   constructor() {
-    this.super();
+    this.render();
   }
 
   render() {
