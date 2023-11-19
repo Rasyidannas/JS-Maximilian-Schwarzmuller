@@ -25,7 +25,10 @@ class ElementAttribute {
 class Component {
   constructor(renderHookId) {
     this.hookId = renderHookId;
+    this.render(); //this will auto call when class instantiate and it will be connect to child of class component
   }
+
+  render() {}
 
   createRootElement(tag, cssClasses, attributes) {
     const rootElement = document.createElement(tag);
@@ -152,21 +155,22 @@ class ProductList extends Component {
 
     for (const prod of this.products) {
       //this instantiate class ProductItem
-      const productItem = new ProductItem(prod, "prod-list");
-      productItem.render();
+      new ProductItem(prod, "prod-list");
     }
   }
 }
 
 class Shop {
+  constructor() {
+    this.super();
+  }
+
   render() {
     //instantiate ShoppingCart class
     this.cart = new ShoppingCart("app"); //this.cart is for store as properti cart and getElementById('app') in index.html
-    this.cart.render();
 
     //instantiate ProductList class
-    const productList = new ProductList("app"); //this 'app' is property
-    productList.render();
+    new ProductList("app"); //this 'app' is property
   }
 }
 
@@ -176,7 +180,6 @@ class App {
   // This can access without instantiate
   static init() {
     const shop = new Shop();
-    shop.render();
     this.cart = shop.cart; //this.cart store as properti cart static and access cart properti in render() method
   }
 
