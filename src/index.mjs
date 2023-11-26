@@ -75,7 +75,13 @@ class ShoppingCart extends Component {
 
   constructor(renderHookId) {
     //super() will call constructor in the parent class
-    super(renderHookId);
+    super(renderHookId, false);
+    this.orderProducts = () => {
+      //this using arrow for can access this.items when call function
+      console.log("Ordering");
+      console.log(this.items);
+    };
+    this.render(); //this call because second argument function super() is false
   }
 
   addProduct(product) {
@@ -91,7 +97,9 @@ class ShoppingCart extends Component {
       <h2>Total: \$${0}</h2>
       <button>Order Now!</button>
     `;
-    cartEl.className = "cart";
+    const orderButton = cartEl.querySelector("button");
+    orderButton.addEventListener("click", this.orderProducts); //this second argument can as alternative way using arrow for can access this in orderProduct
+
     //adding new propertis
     this.totalOutput = cartEl.querySelector("h2");
   }
