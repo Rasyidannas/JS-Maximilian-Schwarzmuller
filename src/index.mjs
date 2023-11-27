@@ -139,16 +139,18 @@ class ProductItem extends Component {
 }
 
 class ProductList extends Component {
-  products = [];
+  //this # is mean private only can access in this class or child class
+  #products = [];
 
   constructor(renderHookId) {
-    super(renderHookId);
+    super(renderHookId, false);
+    this.render();
     //this put in constructor for auto when instatntiate
     this.fetchProducts();
   }
 
   fetchProducts() {
-    this.products = [
+    this.#products = [
       //instantiate class Product
       new Product(
         "A Pillow",
@@ -168,7 +170,7 @@ class ProductList extends Component {
   }
 
   renderProducts() {
-    for (const prod of this.products) {
+    for (const prod of this.#products) {
       //this instantiate class ProductItem
       new ProductItem(prod, "prod-list");
     }
@@ -181,7 +183,7 @@ class ProductList extends Component {
     ]);
 
     //this will avoid if this.products = 0
-    if (this.products && this.products.length > 0) {
+    if (this.#products && this.#products.length > 0) {
       this.renderProducts();
     }
   }
@@ -197,7 +199,7 @@ class Shop {
     this.cart = new ShoppingCart("app"); //this.cart is for store as properti cart and getElementById('app') in index.html
 
     //instantiate ProductList class
-    new ProductList("app"); //this 'app' is property
+    const list = new ProductList("app"); //this 'app' is property
   }
 }
 
