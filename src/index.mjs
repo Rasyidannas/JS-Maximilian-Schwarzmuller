@@ -12,9 +12,40 @@ class DOMHelper {
   }
 }
 
-class Tooltip {
+class Component {
+  constructor(hostElementId, insertBefore = false) {
+    if (hostElementId) {
+      this.hostElement = document.getElementById(hostElementId);
+    } else {
+      this.hostElement = document.body;
+    }
+
+    this.insertBefore = insertBefore;
+  }
+
+  //this will be remove when click modal
+  detach = () => {
+    //this using arrow function because will access this
+    // this.element.parentElement.removeChild(this.element)
+    if (this.element) {
+      this.element.remove(); //this same way like above
+    }
+  };
+
+  //this will show modal
+  attach() {
+    this.hostElement.insertAdjacentElement(
+      this.insertBefore ? "afterbegin" : "beforeend",
+      this.element
+    );
+  }
+}
+
+class Tooltip extends Component {
   constructor(closeNotifierFunction) {
+    super(); //this call becaue using "this"
     this.closeNotifier = closeNotifierFunction; //this is store as property
+    this.create();
   }
 
   closeTooltip = () => {
@@ -22,21 +53,12 @@ class Tooltip {
     this.closeNotifier(); //this calling
   };
 
-  //this will be remove when click modal
-  detach = () => {
-    //this using arrow function because will access this
-    // this.element.parentElement.removeChild(this.element)
-    this.element.remove(); //this same way like above
-  };
-
-  //this will show modal
-  attach() {
+  create() {
     const tooltipElement = document.createElement("div");
     tooltipElement.className = "card";
     tooltipElement.textContent = "DUMMY!";
     tooltipElement.addEventListener("click", this.closeTooltip);
     this.element = tooltipElement; //this store as property
-    document.body.append(tooltipElement);
   }
 }
 
