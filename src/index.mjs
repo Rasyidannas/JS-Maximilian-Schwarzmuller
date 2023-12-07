@@ -1,21 +1,46 @@
+class DOMHelper {
+  static clearEventListeners(element) {
+    const clonedElement = element.cloneNode(true); //this cloneNode will duplicate
+    element.replaceWith(clonedElement); //this will replace another element with clonedElement
+    return clonedElement;
+  }
+
+  static moveElement(elementId, newDestiantionSelector) {
+    const element = document.getElementById(elementId);
+    const destinationElement = document.querySelector(newDestiantionSelector);
+    destinationElement.append(element);
+  }
+}
+
 class Tooltip {}
 
 // this is for box item
 class ProjectItem {
-  constructor(id, updateProjectListsFunction) {
-    this.id = id; //this is property
+  constructor(id, updateProjectListsFunction, type) {
+    this.id = id; //this is store as property
     this.updateProjectListsHandler = updateProjectListsFunction;
     this.connectMoreInfoButton(); //this method will auto run when instantiate
-    this.connectSwitchButton();
+    this.connectSwitchButton(type);
   }
 
   connectMoreInfoButton() {}
 
   //this for change button finish to active
-  connectSwitchButton() {
+  connectSwitchButton(type) {
     const projectItemElement = document.getElementById(this.id);
-    const switchBtn = projectItemElement.querySelector("button:last-of-type");
-    switchBtn.addEventListener("click", this.updateProjectListsHandler);
+    let switchBtn = projectItemElement.querySelector("button:last-of-type");
+    switchBtn = DOMHelper.clearEventListeners(switchBtn);
+    switchBtn.textContent = type === "active" ? "Finish" : "Activate";
+    switchBtn.addEventListener(
+      "click",
+      this.updateProjectListsHandler.bind(null, this.id)
+    );
+  }
+
+  //this for update item
+  update(updateProjectListFn, type) {
+    this.updateProjectListsHandler = updateProjectListFn;
+    this.connectSwitchButton(type);
   }
 }
 
@@ -31,7 +56,7 @@ class ProjectList {
     for (const prjItem of prjItems) {
       //prjItems berisi nodeList
       this.projects.push(
-        new ProjectItem(prjItem.id, this.switchProject.bind(this))
+        new ProjectItem(prjItem.id, this.switchProject.bind(this), this.type)
       );
     }
     // console.log(this.projects);
@@ -41,8 +66,13 @@ class ProjectList {
     this.switchHandler = switchHandlerFunction; //this will store as property and get element for change active and finish
   }
 
-  addProject() {
-    console.log(this);
+  addProject(project) {
+    // console.log(this);
+    this.projects.push(project);
+
+    DOMHelper.moveElement(project.id, `#${this.type}-projects ul`); //this is static class
+
+    project.update(this.switchProject.bind(this), this.type);
   }
 
   //this will move active to finish
