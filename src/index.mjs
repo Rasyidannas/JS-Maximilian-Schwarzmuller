@@ -12,10 +12,38 @@ class DOMHelper {
   }
 }
 
-class Tooltip {}
+class Tooltip {
+  constructor(closeNotifierFunction) {
+    this.closeNotifier = closeNotifierFunction; //this is store as property
+  }
+
+  closeTooltip = () => {
+    this.detach();
+    this.closeNotifier(); //this calling
+  };
+
+  //this will be remove when click modal
+  detach = () => {
+    //this using arrow function because will access this
+    // this.element.parentElement.removeChild(this.element)
+    this.element.remove(); //this same way like above
+  };
+
+  //this will show modal
+  attach() {
+    const tooltipElement = document.createElement("div");
+    tooltipElement.className = "card";
+    tooltipElement.textContent = "DUMMY!";
+    tooltipElement.addEventListener("click", this.closeTooltip);
+    this.element = tooltipElement; //this store as property
+    document.body.append(tooltipElement);
+  }
+}
 
 // this is for box item
 class ProjectItem {
+  hasActiveTooltip = false; //this for avoid mutliple open modal
+
   constructor(id, updateProjectListsFunction, type) {
     this.id = id; //this is store as property
     this.updateProjectListsHandler = updateProjectListsFunction;
@@ -23,7 +51,21 @@ class ProjectItem {
     this.connectSwitchButton(type);
   }
 
-  connectMoreInfoButton() {}
+  showMoreInfoHandler() {
+    if (this.hasActiveTooltip) return;
+
+    const tooltip = new Tooltip(() => (this.hasActiveTooltip = false));
+    tooltip.attach();
+    this.hasActiveTooltip = true;
+  }
+
+  //this for more info button
+  connectMoreInfoButton() {
+    const projectItemElement = document.getElementById(this.id);
+    let moreInfoBtn = projectItemElement.querySelector("button:first-of-type");
+
+    moreInfoBtn.addEventListener("click", this.showMoreInfoHandler);
+  }
 
   //this for change button finish to active
   connectSwitchButton(type) {
