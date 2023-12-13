@@ -42,8 +42,8 @@ class Component {
 }
 
 class Tooltip extends Component {
-  constructor(closeNotifierFunction, text) {
-    super(); //this call becaue using "this"
+  constructor(closeNotifierFunction, text, hostElementId) {
+    super(hostElementId); //this call because using "this" and hostElement properti parent
     this.closeNotifier = closeNotifierFunction; //this is store as property
     this.text = text;
     this.create();
@@ -58,6 +58,20 @@ class Tooltip extends Component {
     const tooltipElement = document.createElement("div");
     tooltipElement.className = "card";
     tooltipElement.textContent = this.text;
+    // console.log(this.hostElement.getBoundingClientRect()); //this is for get info rectangle element html and valu in px
+    const hostElPosLeft = this.hostElement.offsetLeft;
+    const hostElPosTop = this.hostElement.offsetTop;
+    const hostElHeight = this.hostElement.clientHeight;
+    const parentElementScrolling = this.hostElement.parentElement.scrollTop;
+
+    const x = hostElPosLeft + 20;
+    const y = hostElPosTop + hostElHeight - parentElementScrolling - 10;
+
+    //this is for style tooltip
+    tooltipElement.style.position = "absolute";
+    tooltipElement.style.left = x + "px";
+    tooltipElement.style.top = y + "px";
+
     tooltipElement.addEventListener("click", this.closeTooltip);
     this.element = tooltipElement; //this store as property
   }
@@ -85,6 +99,7 @@ class ProjectItem {
     const tooltip = new Tooltip(
       () => (this.hasActiveTooltip = false),
       tooltipText,
+      this.id,
     );
     tooltip.attach();
     this.hasActiveTooltip = true;
