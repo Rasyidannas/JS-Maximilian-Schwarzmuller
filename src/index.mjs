@@ -194,9 +194,12 @@ class App {
       activeProjectList.addProject.bind(activeProjectList),
     ); //this is callback and store element will change active to finish to addProject
 
+    const timerId = setTimeout(this.startAnalytics, 3000);
     document
-      .getElementById("start-analytics-btn")
-      .addEventListener("click", this.startAnalytics);
+      .getElementById("stop-analytics-btn")
+      .addEventListener("click", () => {
+        clearTimeout(timerId);
+      });
   }
 
   //this doesn't work because we are using parcel
