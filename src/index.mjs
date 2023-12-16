@@ -193,6 +193,18 @@ class App {
     finishedProjectList.setSwitchHandlerFunction(
       activeProjectList.addProject.bind(activeProjectList),
     ); //this is callback and store element will change active to finish to addProject
+
+    document
+      .getElementById("start-analytics-btn")
+      .addEventListener("click", this.startAnalytics);
+  }
+
+  //this doesn't work because we are using parcel
+  static startAnalytics() {
+    const analyticsScript = document.createElement("script");
+    analyticsScript.src = "./analytics.mjs";
+    analyticsScript.defer = true;
+    document.head.append(analyticsScript);
   }
 }
 
