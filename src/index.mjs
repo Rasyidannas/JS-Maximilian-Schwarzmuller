@@ -9,6 +9,7 @@ class DOMHelper {
     const element = document.getElementById(elementId);
     const destinationElement = document.querySelector(newDestiantionSelector);
     destinationElement.append(element);
+    element.scrollIntoView({ behavior: "smooth" }); //this will auto scroll to item moved
   }
 }
 
