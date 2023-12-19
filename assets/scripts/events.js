@@ -1,7 +1,8 @@
-const button = document.querySelector("button");
+const buttons = document.querySelectorAll("button");
 
-const buttonClickHandler = () => {
-  alert("Button was clicked!");
+const buttonClickHandler = (event) => {
+  event.target.disabled = true;
+  console.log(event);
 };
 
 const anotherButtonClickHandler = () => {
@@ -10,9 +11,13 @@ const anotherButtonClickHandler = () => {
 
 // button.onclick = buttonClickHandler;
 
-button.addEventListener("click", buttonClickHandler);
+// button.addEventListener("click", buttonClickHandler);
 
 //this will remove above addEventListener. Only work with function expression for second argument and don't bind function
-setTimeout(() => {
-  button.removeEventListener("click", buttonClickHandler);
-}, 2000);
+// setTimeout(() => {
+//   button.removeEventListener("click", buttonClickHandler);
+// }, 2000);
+
+buttons.forEach((btn) => {
+  btn.addEventListener("click", buttonClickHandler);
+});
