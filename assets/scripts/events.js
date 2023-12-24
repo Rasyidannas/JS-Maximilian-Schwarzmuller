@@ -45,7 +45,7 @@ div.addEventListener(
   //true //this will run before/first tahn addEventListener in child element (addEventListener in bellow) or capturing
 );
 
-button.addEventListener("mouseenter", (event) => {
+button.addEventListener("click", (event) => {
   event.stopPropagation(); //this will stop other addEventListener in parent element
   console.log("CLICKED BUTTON");
   console.log(event);
@@ -60,9 +60,13 @@ const list = document.querySelector("ul");
 //   });
 // });
 
-//this is better performance than above (event delegation)
+//this is better performance than above (event delegation) beause not looping like above
 list.addEventListener("click", (event) => {
   // console.log(event.currentTarget); //this is for to focus in list/parent and never to child
   // event.target.classList.toggle("highlight");
   event.target.closest("li").classList.toggle("highlight"); //closest() it will access certain child according arguments
+
+  //triggering DOM elements
+  // form.submit();
+  button.click();
 });
