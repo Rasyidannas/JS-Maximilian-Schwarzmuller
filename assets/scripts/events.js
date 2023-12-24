@@ -50,3 +50,19 @@ button.addEventListener("mouseenter", (event) => {
   console.log("CLICKED BUTTON");
   console.log(event);
 });
+
+const listItems = document.querySelectorAll("li");
+const list = document.querySelector("ul");
+
+// listItems.forEach((listItem) => {
+//   listItem.addEventListener("click", (event) => {
+//     event.target.classList.toggle("highlight");
+//   });
+// });
+
+//this is better performance than above (event delegation)
+list.addEventListener("click", (event) => {
+  // console.log(event.currentTarget); //this is for to focus in list/parent and never to child
+  // event.target.classList.toggle("highlight");
+  event.target.closest("li").classList.toggle("highlight"); //closest() it will access certain child according arguments
+});
