@@ -25,3 +25,17 @@ function addRandom(num1) {
 }
 
 console.log(addRandom(5));
+
+///////// FACTORY FUNCTION /////////
+// this is factory fucntion is a function that produce another function
+function createTaxCalculator(tax) {
+  function calculateTax(amount) {
+    return amount * tax;
+  }
+
+  return calculateTax; //this will produce calculateTax function when createTaxCalculator call/execute because it not execute and just declare
+}
+
+const calculateVatAmount = createTaxCalculator(0.25);
+
+console.log(calculateVatAmount(100)); //this argument will as amount in calculateTax and call/execute it
