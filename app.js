@@ -30,6 +30,7 @@ console.log(addRandom(5));
 // this is factory fucntion is a function that produce another function
 function createTaxCalculator(tax) {
   function calculateTax(amount) {
+    //this is closure (add inner function)
     return amount * tax;
   }
 
