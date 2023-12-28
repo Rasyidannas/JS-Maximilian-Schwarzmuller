@@ -107,7 +107,7 @@ const showResult = (messageText, result) => {
   alert(messageText + " " + result);
 };
 
-// this is using bind for delay and run first in this and then in callback
+// this is using bind for delay and run first in this and then in callback (second argument / result will get from sum argument)
 combine(
   showResult.bind(null, "the result after adding all number is:"),
   "ADD",
