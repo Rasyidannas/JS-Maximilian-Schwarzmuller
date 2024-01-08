@@ -25,28 +25,15 @@ const setTimer = (duration) => {
   return promise;
 };
 
-function trackUserHandler() {
-  let positionData;
-  //this is promise chaining
-  getPosition()
-    .then((posData) => {
-      //this posData is success in getPosition
-      positionData = posData;
-      return setTimer(2000);
-    })
-    .catch((err) => {
-      //this will execute if above cancel
-      console.log(err);
-      return "on we go...";
-    })
-    .then((data) => {
-      // this data is "Done!" and then in this will execute after then above
-      console.log(data, positionData);
-    });
+async function trackUserHandler() {
+  const posData = await getPosition();
+  const timerData = await setTimer(2000);
 
-  setTimer(1000).then((data) => console.log("Timer done!"));
+  console.log(timerData, posData);
 
-  console.log("Getting position...");
+  // setTimer(1000).then((data) => console.log("Timer done!"));
+
+  // console.log("Getting position...");
 }
 
 button.addEventListener("click", trackUserHandler);
