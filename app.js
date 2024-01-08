@@ -7,7 +7,9 @@ const getPosition = (opts) => {
       (success) => {
         resolve(success);
       },
-      (error) => {},
+      (error) => {
+        reject(error);
+      },
       opts
     );
   });
@@ -28,8 +30,14 @@ function trackUserHandler() {
   //this is promise chaining
   getPosition()
     .then((posData) => {
+      //this posData is success in getPosition
       positionData = posData;
       return setTimer(2000);
+    })
+    .catch((err) => {
+      //this will execute if above cancel
+      console.log(err);
+      return "on we go...";
     })
     .then((data) => {
       // this data is "Done!" and then in this will execute after then above
