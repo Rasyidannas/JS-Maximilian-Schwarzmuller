@@ -11,25 +11,43 @@ function sendHttpRequest(method, url, data) {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((response) => response.json());
+  })
+    .then((response) => {
+      if (response.status >= 200 && response.status < 300) {
+        return response.json();
+      } else {
+        return response.json().then((errData) => {
+          console.log(errData);
+          throw new Error("Something went wrong - server-side.");
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      throw new Error("Something went wrong!");
+    });
 }
 
 //this is function for get datas
 async function fetchPosts() {
-  const responseData = await sendHttpRequest(
-    "GET",
-    "https://jsonplaceholder.typicode.com/posts"
-  );
+  try {
+    const responseData = await sendHttpRequest(
+      "GET",
+      "https://jsonplaceholder.typicode.com/posts"
+    );
 
-  const listOfPosts = responseData;
-  //   console.log(listOfPosts);
+    const listOfPosts = responseData;
+    //   console.log(listOfPosts);
 
-  for (const post of listOfPosts) {
-    const postEl = document.importNode(postTemplate.content, true); //this is for cloning/copy postTemplate
-    postEl.querySelector("h2").textContent = post.title.toUpperCase();
-    postEl.querySelector("p").textContent = post.body;
-    postEl.querySelector("li").id = post.id;
-    listElement.append(postEl);
+    for (const post of listOfPosts) {
+      const postEl = document.importNode(postTemplate.content, true); //this is for cloning/copy postTemplate
+      postEl.querySelector("h2").textContent = post.title.toUpperCase();
+      postEl.querySelector("p").textContent = post.body;
+      postEl.querySelector("li").id = post.id;
+      listElement.append(postEl);
+    }
+  } catch (error) {
+    alert(error.message);
   }
 }
 
