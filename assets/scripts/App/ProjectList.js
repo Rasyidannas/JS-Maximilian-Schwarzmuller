@@ -17,6 +17,8 @@ export class ProjectList {
   }
 
   connectDroppable() {
+    console.log(globalThis);
+    console.log(globalThis.DEFAULT_VALUE); //this will call variable in app.js
     const list = document.querySelector(`#${this.type}-projects ul`);
 
     list.addEventListener("dragenter", (event) => {
