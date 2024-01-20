@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Rasyidannas/JS-Maximilian-Schwarzmuller/issues"
   },
-  "homepage": "https://github.com/Rasyidannas/JS-Maximilian-Schwarzmuller#readme"
+  "homepage": "https://github.com/Rasyidannas/JS-Maximilian-Schwarzmuller#readme",
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  }
 }
