@@ -5,6 +5,10 @@ let db;
 
 const dbRequest = indexedDB.open("StorageDummy", 1);
 
+dbRequest.onsuccess = function (event) {
+  db = event.target.result;
+};
+
 dbRequest.onupgradeneeded = function (event) {
   db = event.target.result;
 
@@ -27,6 +31,28 @@ dbRequest.onerror = function (event) {
   console.log("ERROR!");
 };
 
-storeBtn.addEventListener("click", () => {});
+storeBtn.addEventListener("click", () => {
+  if (!db) {
+    return;
+  }
+  const productsStore = db
+    .transaction("products", "readwrite")
+    .objectStore("products");
+  productsStore.add({
+    id: "p2",
+    title: "A Second Product",
+    price: 122.99,
+    tags: ["Expensive", "Luxury"],
+  });
+});
 
-retrBtn.addEventListener("click", () => {});
+retrBtn.addEventListener("click", () => {
+  const productsStore = db
+    .transaction("products", "readwrite")
+    .objectStore("products");
+  const request = productsStore.get("p2");
+
+  request.onsuccess = function () {
+    console.log(request.result);
+  };
+});
