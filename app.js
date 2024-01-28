@@ -1,58 +1,17 @@
-const storeBtn = document.getElementById("store-btn");
-const retrBtn = document.getElementById("retrieve-btn");
+//Library land
+const uid = Symbol("uid"); //this is symbol is unique property identifier for object
+console.log(uid);
 
-let db;
-
-const dbRequest = indexedDB.open("StorageDummy", 1);
-
-dbRequest.onsuccess = function (event) {
-  db = event.target.result;
+const user = {
+  [uid]: "p1", //this call Symbol
+  name: "Rasyid",
+  age: "25",
 };
 
-dbRequest.onupgradeneeded = function (event) {
-  db = event.target.result;
+user[uid] = "p3"; //this reassign symbol
 
-  const objStore = db.createObjectStore("products", { keyPath: "id" });
+//app land => using the library
+user.id = "p2";
 
-  objStore.transaction.oncomplete = function (event) {
-    const productsStore = db
-      .transaction("products", "readwrite")
-      .objectStore("products");
-    productsStore.add({
-      id: "p1",
-      title: "A First Product",
-      price: 12.99,
-      tags: ["Expensive", "Luxury"],
-    });
-  };
-};
-
-dbRequest.onerror = function (event) {
-  console.log("ERROR!");
-};
-
-storeBtn.addEventListener("click", () => {
-  if (!db) {
-    return;
-  }
-  const productsStore = db
-    .transaction("products", "readwrite")
-    .objectStore("products");
-  productsStore.add({
-    id: "p2",
-    title: "A Second Product",
-    price: 122.99,
-    tags: ["Expensive", "Luxury"],
-  });
-});
-
-retrBtn.addEventListener("click", () => {
-  const productsStore = db
-    .transaction("products", "readwrite")
-    .objectStore("products");
-  const request = productsStore.get("p2");
-
-  request.onsuccess = function () {
-    console.log(request.result);
-  };
-});
+console.log(user);
+console.log(user[Symbol("uid")]);
